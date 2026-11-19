@@ -1,7 +1,7 @@
 /**
  * BREAKPOINT: at what arrival rate does the baseline stop keeping up?
  *
- * Load: open model, a linear ramp from 0 to MAX_PER_MIN over 25 min.
+ * Load: open model, a linear ramp from 0 to MAX_PER_MIN over 30 min.
  * Stop condition: k6 aborts the test (abortOnFail) when the error rate exceeds 5%, when success
  * p95 exceeds 3 s, or when more than 100 sessions couldn't start (VUs exhausted). k6 evaluates
  * thresholds cumulatively, so the abort lags the real breaking point. The breakpoint itself is
@@ -19,11 +19,14 @@ import {
   setupClock,
 } from "./common.ts";
 
-/** Upper bound of the ramp. Well above any rate this laptop is expected to sustain. */
-export const MAX_PER_MIN = 3000;
+/**
+ * Upper bound of the ramp. The first run (to 3000/min) never failed the thresholds, with errors
+ * only starting near the top, so the ceiling is doubled (docs/scenarios.md).
+ */
+export const MAX_PER_MIN = 6000;
 
 const PLAN = plan("breakpoint", "ramping-arrival-rate", 0, [
-  { name: "ramp", durationS: 1500, targetPerMin: MAX_PER_MIN },
+  { name: "ramp", durationS: 1800, targetPerMin: MAX_PER_MIN },
 ]);
 
 const abort = (threshold: string) => ({ threshold, abortOnFail: true, delayAbortEval: "60s" });

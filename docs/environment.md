@@ -94,6 +94,7 @@ The runner captures these **before and after** every run, without sudo:
 | Busy processes | `top -l 2 -s 2` (2 s CPU sample, top 15) | no non-lab process ≥ 25% CPU |
 | Heavy applications | `ps` against a list (Chrome, Transmission, Firefox, Slack, Zoom, Teams, Spotify) | none running |
 | Display/system sleep | the runner holds `caffeinate -d -i -w <pid>` for the whole run | assertion held |
+| Sleep, wake, battery **during** the run | `pmset -g log` entries between k6 start and end | none |
 
 **Not captured** (they need `sudo powermetrics`): CPU frequency, die temperature, power draw. Every manifest lists them under `conditions.*.not_captured`. Thermal state is the only throttling signal available. It's coarse: it moves only when macOS is already reacting.
 
@@ -111,6 +112,7 @@ Lab processes that never count as "busy": Docker Desktop and its VM process (`co
 - the repo had uncommitted changes, so the commit doesn't describe the code that ran
 - an image's digest doesn't match `demo/compose.images.yaml`
 - Docker VM memory below 12 GB
+- the power log (`pmset -g log`) shows the Mac slept, woke or ran on battery **at any time during the run**. Checking only before and after misses this, and `caffeinate` can't prevent lid-closed (clamshell) sleep on battery
 - k6 usage reporting not disabled, or `caffeinate` not held
 
 `perflab run --require-valid` aborts **before sending any load** if the pre-run checks already make the run invalid. Invalid runs are kept but never used for comparison, as the definition of done requires.

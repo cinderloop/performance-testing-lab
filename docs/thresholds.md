@@ -53,7 +53,7 @@ k6 aborts the run (`abortOnFail`, evaluation delayed 60 s) when:
 - success p95 exceeds 3 s, or
 - more than 100 sessions couldn't start (VUs exhausted).
 
-k6 evaluates thresholds over everything since the start, not per window, so the abort comes **after** the real breaking point. That's fine: it only has to end the run cleanly. The breakpoint itself is computed from the windows above. The ramp's end, 3000 sessions/min after 25 min, bounds the run regardless.
+k6 evaluates thresholds over everything since the start, not per window, so the abort comes **after** the real breaking point. That's fine: it only has to end the run cleanly. The breakpoint itself is computed from the windows above. The ramp's end, 6000 sessions/min after 30 min, bounds the run regardless.
 
 ## What to expect in Phase 4.8
 
