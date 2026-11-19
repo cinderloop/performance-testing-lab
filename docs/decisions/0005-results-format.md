@@ -28,3 +28,12 @@ Ground rule 1 says every number must come from a real run whose raw data and man
 
 - Analysis code (Phase 4) reads `k6-raw.json.gz` and `manifest.json` only.
 - `manifest.json` records the exact `docker create` command for k6, and `command.perflab` the CLI invocation. Together with the git commit, that reproduces the run.
+
+## Amendment 2026-11-20 (Phase 2): full raw output is not committed
+
+The first breakpoint run (25 min) produced an 86 MB `k6-raw.json.gz`. k6 writes about ten metric lines per request (`http_req_blocked`, `…_connecting`, `…_waiting` …, plus one per check), and the soak and breakpoint runs would go over GitHub's 100 MB file limit. Decided with the owner:
+
+- **Committed:** `samples.csv.gz`, derived from the raw file by `analysis.compact`. It has one row per request, session end and dropped session, with every field analysis uses kept verbatim: k6's timestamp, the duration, and the `expected_response`, `name`, `endpoint_group`, `status`, `error_code`, `journey`, `step` and `scenario` tags. A unit test proves analysis gives identical results from either file, and the reports of the first two Phase 2 runs were rebuilt from both and compared equal. It's about 9% of the raw size.
+- **Not committed:** `k6-raw.json.gz` (git-ignored). It's kept locally and published as a **GitHub Release asset** for each phase. `raw_archive.json` in the run directory records its size and SHA-256, so a downloaded copy can be verified.
+- Runs from Phase 1 keep their already-committed (small) raw files.
+- `metadata.trace_id` isn't in the compact file yet. Phase 3 adds a column for it when trace correlation is wired in.

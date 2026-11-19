@@ -144,8 +144,8 @@ def cmd_reset(args: argparse.Namespace) -> int:
 def cmd_report(args: argparse.Namespace) -> int:
     """Rebuild report.json for a run from its raw data."""
     run_dir = Path(args.run_dir)
-    if not (run_dir / "k6-raw.json.gz").exists():
-        print(f"no k6-raw.json.gz in {run_dir}", file=sys.stderr)
+    if not any((run_dir / f).exists() for f in ("samples.csv.gz", "k6-raw.json.gz")):
+        print(f"no samples.csv.gz or k6-raw.json.gz in {run_dir}", file=sys.stderr)
         return 2
     print(report.text(report.write(run_dir)), end="")
     return 0

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import csv
 import gzip
 import json
 import re
@@ -49,6 +50,35 @@ def _epoch(value: str) -> float:
     return datetime.fromisoformat(_FRACTION.sub(r".\1", value)).timestamp()
 
 
+COLUMNS = (
+    "kind",  # request | iteration | dropped
+    "time",  # k6 sample time (RFC 3339, as written by k6): end of the request or session
+    "value",  # request: duration in ms; iteration: 1; dropped: number of sessions dropped
+    "expected_response",
+    "name",
+    "endpoint_group",
+    "status",
+    "error_code",
+    "journey",
+    "step",
+    "scenario",
+)
+KINDS = {"http_req_duration": "request", "iterations": "iteration", "dropped_iterations": "dropped"}
+
+
+def iter_compact(path: Path) -> Iterator[dict[str, Any]]:
+    """Yield raw-JSON-shaped points from a compact file, so one loader serves both formats."""
+    metric = {v: k for k, v in KINDS.items()}
+    with gzip.open(path, "rt", newline="") as fh:
+        for row in csv.DictReader(fh):
+            tags = {c: row[c] for c in COLUMNS[3:] if row[c] != ""}
+            yield {
+                "type": "Point",
+                "metric": metric[row["kind"]],
+                "data": {"time": row["time"], "value": float(row["value"]), "tags": tags},
+            }
+
+
 def iter_points(path: Path) -> Iterator[dict[str, Any]]:
     with _open(path) as fh:
         for line in fh:
@@ -58,11 +88,16 @@ def iter_points(path: Path) -> Iterator[dict[str, Any]]:
 
 
 def load(path: Path) -> RawRun:
+    """Load k6 raw JSON output or the compact samples.csv.gz (same result for both)."""
+    if path.name.endswith(".csv.gz"):
+        points: Iterator[dict[str, Any]] = iter_compact(path)
+    else:
+        points = iter_points(path)
     requests: list[Request] = []
     dropped: list[float] = []
     iterations: list[float] = []
     first: float | None = None
-    for p in iter_points(path):
+    for p in points:
         data = p["data"]
         t = _epoch(data["time"])
         first = t if first is None else min(first, t)

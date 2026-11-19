@@ -15,3 +15,6 @@ __pycache__/
 
 # macOS
 .DS_Store
+
+# Full k6 raw output: too big for git; published as GitHub Release assets (ADR 0005)
+/results/*/k6-raw.json.gz

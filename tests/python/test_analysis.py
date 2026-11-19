@@ -9,6 +9,7 @@ from pathlib import Path
 import pytest
 
 from analysis import criteria
+from analysis.compact import finalize
 from analysis.plan import Phase, Plan, parse
 from analysis.raw import Request, load
 from analysis.stats import describe, percentile
@@ -262,3 +263,61 @@ def test_thresholds_match_k6() -> None:
         re.findall(r"endpoint_group:(\w+),expected_response:true}\": \[\"p\(95\)<(\d+)\"\]", ts)
     )
     assert {k: float(v) for k, v in found.items()} == criteria.GROUP_P95_LIMIT_MS
+
+
+# --- compact format ------------------------------------------------------------------------
+
+
+def test_compact_round_trip_gives_identical_analysis(tmp_path: Path) -> None:
+    points = []
+    for i in range(50):
+        points.append(
+            {
+                "type": "Point",
+                "metric": "http_req_duration",
+                "data": {
+                    "time": f"2026-11-19T19:46:{i:02d}.123456789Z",
+                    "value": 1.5 + i,
+                    "tags": {
+                        "expected_response": "true" if i % 7 else "false",
+                        "name": "api_x",
+                        "endpoint_group": "api",
+                        "status": "200" if i % 7 else "500",
+                        "journey": "buy",
+                        "step": "checkout",
+                    },
+                },
+            }
+        )
+        points.append(
+            {
+                "type": "Point",
+                "metric": "http_req_waiting",
+                "data": {"time": "2026-11-19T19:46:00Z", "value": 1},
+            }
+        )
+    points.append(
+        {
+            "type": "Point",
+            "metric": "dropped_iterations",
+            "data": {"time": "2026-11-19T19:47:00Z", "value": 3},
+        }
+    )
+    points.append(
+        {
+            "type": "Point",
+            "metric": "iterations",
+            "data": {"time": "2026-11-19T19:47:01Z", "value": 1},
+        }
+    )
+    raw_path = tmp_path / "k6-raw.json.gz"
+    with gzip.open(raw_path, "wt") as fh:
+        fh.writelines(json.dumps(p) + "\n" for p in points)
+    record = finalize(tmp_path)
+    assert record["compact_rows"] == 52  # 50 requests + 1 dropped + 1 iteration, no other metrics
+    assert len(record["sha256"]) == 64
+    full, small = load(raw_path), load(tmp_path / "samples.csv.gz")
+    # Everything analysis reads is identical. (`first_sample` differs only because the compact
+    # file drops other metrics' timestamps; analysis takes t0 from setup(), not from it.)
+    assert full.requests == small.requests
+    assert (full.dropped_at, full.iterations_at) == (small.dropped_at, small.iterations_at)

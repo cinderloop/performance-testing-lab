@@ -2,7 +2,10 @@
 
 Writes results/<run-id>/:
   manifest.json      everything needed to judge and reproduce the run
-  k6-raw.json.gz     one line per sample (k6 `--out json`), the source of truth for analysis
+  k6-raw.json.gz     k6 `--out json`, every metric sample. NOT committed (too big): kept locally
+                     and published as a GitHub Release asset; raw_archive.json has its SHA-256
+  samples.csv.gz     one row per request, session end and dropped session, derived from the raw
+                     file; committed, and what analysis reads
   k6-summary.json    k6's end-of-test summary data (convenience only)
   k6-stdout.log      k6 console output
   k6-resources.csv   the k6 container's own CPU and memory, about once per second
@@ -28,7 +31,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-from analysis import report
+from analysis import compact, report
 from perflab import compose, conditions
 from perflab.dockerapi import Docker, Sample, cores_between
 from perflab.paths import K6_DIR, RESULTS_DIR, ROOT, load_pin
@@ -364,6 +367,7 @@ def run(opts: RunOptions) -> int:
 
     if (out_dir / RAW_FILE).exists():
         try:
+            compact.finalize(out_dir)
             sys.stdout.write(report.text(report.write(out_dir)))
         except (OSError, ValueError, KeyError) as e:  # never lose a run to a report bug
             say(f"report failed ({e}); rebuild it with: perflab report {out_dir}")

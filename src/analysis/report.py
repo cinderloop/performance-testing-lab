@@ -38,12 +38,15 @@ def _by(rs: Sequence[Request], key: str) -> dict[str, Any]:
 
 
 def build(run_dir: Path) -> dict[str, Any]:
-    raw = load(run_dir / "k6-raw.json.gz")
+    source = run_dir / "samples.csv.gz"
+    if not source.exists():
+        source = run_dir / "k6-raw.json.gz"
+    raw = load(source)
     plan = plan_mod.load(run_dir / "scenario-plan.json")
     rs = raw.requests
     report: dict[str, Any] = {
         "run_dir": run_dir.name,
-        "source": "k6-raw.json.gz (every request); percentiles: linear interpolation (type 7)",
+        "source": f"{source.name} (every request); percentiles: linear interpolation (type 7)",
         "warmup_excluded": None,
         "overall": _split(rs),
         "by_group": _by(rs, "group"),
