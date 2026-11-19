@@ -1,0 +1,10 @@
+# Kept out of the repo by the owner's decision (2026-11-20)
+/article/
+/build-prompt.md
+
+# macOS
+.DS_Store
+
+# Run output and local env
+/results/
+.env.local
