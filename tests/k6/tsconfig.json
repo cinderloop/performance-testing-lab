@@ -3,5 +3,11 @@
   "compilerOptions": {
     "types": ["node", "k6"]
   },
-  "include": ["./**/*.ts", "../../k6/lib/guard.ts", "../../k6/lib/config.ts"]
+  "include": [
+    "./**/*.ts",
+    "../../k6/lib/guard.ts",
+    "../../k6/lib/config.ts",
+    "../../k6/lib/phases.ts",
+    "../../k6/lib/random.ts"
+  ]
 }

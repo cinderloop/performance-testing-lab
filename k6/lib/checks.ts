@@ -43,3 +43,8 @@ export function checkBodyIncludes(res: Response, name: string, text: string): bo
     { name },
   );
 }
+
+/** Check a value already computed from earlier responses (e.g. correlation results). */
+export function checkValue(ok: boolean, name: string, what: string): boolean {
+  return check(null, { [`${name} ${what}`]: () => ok }, { name });
+}
