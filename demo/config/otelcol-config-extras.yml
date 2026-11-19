@@ -1,0 +1,16 @@
+# Lab collector overrides, loaded last through upstream's OTEL_COLLECTOR_CONFIG_EXTRAS seam
+# (set in demo/demo.env). Upstream's own extras file is intentionally empty.
+#
+# Why (docs/environment.md, "Metric resolution"):
+# - span_metrics: the connector that turns traces into per-service RED metrics flushes every 60 s
+#   by default. It is the only RED source for services whose SDKs export no metrics, and for
+#   frontend, whose SDK metric reader is hard-coded to 60 s. 10 s matches the SDK interval.
+# - docker_stats: container CPU/memory for USE analysis. 10 s is the receiver default; it is set
+#   explicitly so the manifest can state it as configured rather than assumed.
+connectors:
+  span_metrics:
+    metrics_flush_interval: 10s
+
+receivers:
+  docker_stats:
+    collection_interval: 10s

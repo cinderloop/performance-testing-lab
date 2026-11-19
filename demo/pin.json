@@ -1,0 +1,16 @@
+{
+  "demo": {
+    "repo": "https://github.com/open-telemetry/opentelemetry-demo.git",
+    "tag": "3.1.0",
+    "commit": "dedc0178918e260823323b8d95005a8cb924b007"
+  },
+  "compose_project": "otel-demo",
+  "compose_files": [
+    "compose.yaml",
+    "compose.full.yaml",
+    "compose.observability.yaml",
+    "compose.extras.yaml"
+  ],
+  "network": "opentelemetry-demo",
+  "k6_image": "grafana/k6:2.3.0@sha256:2dd4756ec6e14e62778916e1eb850108e4b499304c02df56760fa0bdb0fba0b8"
+}

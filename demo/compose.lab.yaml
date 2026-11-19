@@ -1,0 +1,129 @@
+# Lab override for opentelemetry-demo 3.1.0 (applied after the upstream compose files).
+#
+# What it changes, and why (see docs/spike-findings.md and docs/decisions/):
+#   1. Ports: no service publishes anything except three loopback-only ports (rule 4, spike §12).
+#   2. The built-in load generator is never created (rule 7, spike §4, docs/reset-protocol.md).
+#   3. product-catalog and checkout get GOMEMLIMIT=48MiB / 64M (ADR 0003).
+#   4. opensearch and kafka get a little memory headroom (spike §3: 99% and 93% of their limit at idle).
+#   5. Every app service exports SDK metrics every 10 s instead of the 60 s default (spike §9, C3).
+#
+# Relative paths resolve against the project directory, which is demo/.upstream.
+# The CI check `perflab ports` fails if any published port isn't bound to 127.0.0.1.
+
+x-lab-metrics: &lab-metrics
+  OTEL_METRIC_EXPORT_INTERVAL: "10000"
+
+services:
+  # --- app tier --------------------------------------------------------------
+  accounting:
+    environment: *lab-metrics
+  ad:
+    ports: !reset []
+    environment: *lab-metrics
+  astronomy-db:
+    ports: !reset []
+  cart:
+    ports: !reset []
+    environment: *lab-metrics
+  checkout:
+    ports: !reset []
+    environment:
+      <<: *lab-metrics
+      GOMEMLIMIT: 48MiB
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+  currency:
+    ports: !reset []
+    environment: *lab-metrics
+  email:
+    ports: !reset []
+    environment: *lab-metrics
+  flagd:
+    ports: !reset []
+    environment: *lab-metrics
+  flagd-ui:
+    ports: !reset []
+    environment: *lab-metrics
+  fraud-detection:
+    environment: *lab-metrics
+  frontend:
+    ports: !reset []
+    environment: *lab-metrics
+  frontend-proxy:
+    ports: !override
+      - "127.0.0.1:8080:8080" # shop, Grafana, Jaeger, flagd-ui
+      - "127.0.0.1:10000:10000" # Envoy admin (request counters)
+    environment: *lab-metrics
+    depends_on: !override # upstream list minus load-generator
+      frontend:
+        condition: service_healthy
+      flagd-ui:
+        condition: service_healthy
+      telemetry-docs:
+        condition: service_healthy
+      jaeger:
+        condition: service_started
+      grafana:
+        condition: service_started
+      opamp-server:
+        condition: service_healthy
+  image-provider:
+    ports: !reset []
+    environment: *lab-metrics
+  kafka:
+    environment: *lab-metrics
+    deploy:
+      resources:
+        limits:
+          memory: 800M
+  payment:
+    ports: !reset []
+    environment: *lab-metrics
+  product-catalog:
+    ports: !reset []
+    environment:
+      <<: *lab-metrics
+      GOMEMLIMIT: 48MiB
+    volumes:
+      # product-catalog reads SDK settings from this file, not from env vars
+      - ../config/otel-config.yml:/otel-config.yml
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+  quote:
+    ports: !reset []
+    environment: *lab-metrics
+  recommendation:
+    ports: !reset []
+    environment: *lab-metrics
+  shipping:
+    ports: !reset []
+    environment: *lab-metrics
+  telemetry-docs:
+    ports: !reset []
+  valkey-cart:
+    ports: !reset []
+
+  # --- built-in load generator: never started ----------------------------------
+  load-generator:
+    profiles: ["loadgen"]
+
+  # --- observability (kept across resets) ----------------------------------------
+  grafana:
+    ports: !reset []
+  jaeger:
+    ports: !reset []
+  opensearch:
+    ports: !reset []
+    deploy:
+      resources:
+        limits:
+          memory: 1536M
+  otel-collector:
+    ports: !reset []
+  prometheus:
+    ports: !override
+      - "127.0.0.1:9090:9090"
