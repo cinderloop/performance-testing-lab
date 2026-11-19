@@ -1,0 +1,9 @@
+run 20261119T202009Z-smoke-8de5: 49.7 s
+  requests                   112 (2.3/s)
+  failed requests            0 (0.00%)
+  duration, successes        n=112  med=4.9  p95=23.1  p99=60.2  max=113.3 ms
+  duration, failures         n=0
+  checks passed              206/206
+  iterations                 6, dropped 0
+  thresholds passed
+  (raw per-request data: k6-raw.json.gz; use it, not these per-run percentiles)

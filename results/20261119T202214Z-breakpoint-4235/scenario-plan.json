@@ -1,0 +1,19 @@
+{
+  "plan": {
+    "scenario": "breakpoint",
+    "executor": "ramping-arrival-rate",
+    "rateUnit": "sessions_per_minute",
+    "phases": [
+      {
+        "name": "ramp",
+        "durationS": 1500,
+        "targetPerMin": 3000,
+        "startS": 0,
+        "endS": 1500,
+        "startPerMin": 0
+      }
+    ],
+    "totalS": 1500
+  },
+  "t0Ms": 1795119800435
+}

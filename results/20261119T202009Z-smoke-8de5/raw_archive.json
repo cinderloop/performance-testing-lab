@@ -1,0 +1,9 @@
+{
+  "file": "k6-raw.json.gz",
+  "bytes": 18227,
+  "sha256": "395ca37292e09bc6f7dbe2fa52181c935ec5de2ad3bf091c7033cfd49bcf13c8",
+  "committed": false,
+  "where": "GitHub Release asset for the phase (see docs/scenarios.md); local copy kept",
+  "compact_file": "samples.csv.gz",
+  "compact_rows": 118
+}

@@ -1,0 +1,123 @@
+{
+  "ran": true,
+  "started_at": "2026-11-19T20:22:14.343060+00:00",
+  "finished_at": "2026-11-19T20:23:16.516269+00:00",
+  "seconds_to_healthy": 29.9,
+  "settle_seconds": 30,
+  "checks": [
+    {
+      "name": "upstream_pinned_and_clean",
+      "passed": true,
+      "observed": {
+        "head": "dedc0178918e260823323b8d95005a8cb924b007",
+        "dirty": []
+      },
+      "expected": "HEAD dedc0178918e with no local changes"
+    },
+    {
+      "name": "orders_empty",
+      "passed": true,
+      "observed": "0",
+      "expected": "0 rows in accounting.order"
+    },
+    {
+      "name": "carts_empty",
+      "passed": true,
+      "observed": 1,
+      "expected": "<= 1 key"
+    },
+    {
+      "name": "kafka_orders_empty",
+      "passed": true,
+      "observed": "orders:0:0",
+      "expected": "every orders partition at offset 0"
+    },
+    {
+      "name": "flags_pristine",
+      "passed": true,
+      "observed": {
+        "differs": {},
+        "unexpected": []
+      },
+      "expected": "every flag on its pinned defaultVariant"
+    },
+    {
+      "name": "loadgen_no_container",
+      "passed": true,
+      "observed": [],
+      "expected": "no load-generator container"
+    },
+    {
+      "name": "loadgen_route_dead",
+      "passed": true,
+      "observed": 503,
+      "expected": "HTTP 503"
+    },
+    {
+      "name": "no_idle_traffic",
+      "passed": true,
+      "observed": 0,
+      "expected": "<= 2 frontend requests in 30s (health checks only)"
+    },
+    {
+      "name": "gc_gate_product-catalog",
+      "passed": true,
+      "observed": 0.0027,
+      "expected": "<= 0.05 cores at idle (ADR 0003)"
+    },
+    {
+      "name": "gc_gate_checkout",
+      "passed": true,
+      "observed": 0.0026,
+      "expected": "<= 0.05 cores at idle (ADR 0003)"
+    },
+    {
+      "name": "go_memory_product-catalog",
+      "passed": true,
+      "observed": {
+        "used": 15538440.0,
+        "limit": 50331648.0
+      },
+      "expected": "go_memory_used_bytes < go_memory_limit_bytes"
+    },
+    {
+      "name": "go_memory_checkout",
+      "passed": true,
+      "observed": {
+        "used": 13162760.0,
+        "limit": 50331648.0
+      },
+      "expected": "go_memory_used_bytes < go_memory_limit_bytes"
+    }
+  ],
+  "idle_cores": {
+    "accounting": 0.0057,
+    "ad": 0.0052,
+    "astronomy-db": 0.0067,
+    "cart": 0.0082,
+    "checkout": 0.0026,
+    "currency": 0.0024,
+    "email": 0.0087,
+    "flagd": 0.0006,
+    "flagd-ui": 0.0029,
+    "fraud-detection": 0.014,
+    "frontend": 0.0055,
+    "frontend-proxy": 0.0089,
+    "grafana": 0.0084,
+    "image-provider": 0.0031,
+    "jaeger": 0.0013,
+    "kafka": 0.052,
+    "opamp-server": 0.0024,
+    "opensearch": 0.0159,
+    "otel-collector": 0.0216,
+    "payment": 0.0436,
+    "product-catalog": 0.0027,
+    "prometheus": 0.0054,
+    "quote": 0.0033,
+    "recommendation": 0.0146,
+    "shipping": 0.0039,
+    "telemetry-docs": 0.0029,
+    "valkey-cart": 0.004
+  },
+  "passed": true
+}

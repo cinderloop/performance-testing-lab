@@ -1,0 +1,9 @@
+run 20261119T202214Z-breakpoint-4235: 1545.4 s
+  requests                   599009 (387.6/s)
+  failed requests            543 (0.09%)
+  duration, successes        n=598466  med=1.7  p95=9.8  p99=69.1  max=31363.8 ms
+  duration, failures         n=543  med=17.8  p95=270.5  p99=454.6  max=521.3 ms
+  checks passed              1107537/1108617
+  iterations                 37499, dropped 0
+  thresholds passed
+  (raw per-request data: k6-raw.json.gz; use it, not these per-run percentiles)

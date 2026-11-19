@@ -1,0 +1,786 @@
+{
+  "schema": 1,
+  "run_id": "20261119T202009Z-smoke-8de5",
+  "valid": true,
+  "invalid_reasons": [],
+  "scenario": "scenarios/smoke.ts",
+  "experiment": null,
+  "started_at": "2026-11-19T20:20:09.555700+00:00",
+  "k6_started_at": "2026-11-19T20:21:15.700337+00:00",
+  "k6_finished_at": "2026-11-19T20:22:05.542038+00:00",
+  "finished_at": "2026-11-19T20:22:08.851547+00:00",
+  "command": {
+    "perflab": [
+      "/Users/home/Documents/performance testing/.venv/bin/perflab",
+      "run",
+      "--require-valid",
+      "scenarios/smoke.ts"
+    ],
+    "k6_container": [
+      "docker",
+      "create",
+      "--name",
+      "k6-20261119T202009Z-smoke-8de5",
+      "--network",
+      "opentelemetry-demo",
+      "-e",
+      "K6_NO_USAGE_REPORT=true",
+      "-v",
+      "/Users/home/Documents/performance testing/k6:/k6:ro",
+      "-v",
+      "/Users/home/Documents/performance testing/results/20261119T202009Z-smoke-8de5:/results",
+      "grafana/k6:2.3.0@sha256:2dd4756ec6e14e62778916e1eb850108e4b499304c02df56760fa0bdb0fba0b8",
+      "run",
+      "--quiet",
+      "--no-usage-report",
+      "--out",
+      "json=/results/k6-raw.json.gz",
+      "-e",
+      "BASE_URL=http://frontend-proxy:8080",
+      "-e",
+      "RESULTS_DIR=/results",
+      "-e",
+      "RUN_ID=20261119T202009Z-smoke-8de5",
+      "-e",
+      "TIMEOUT_MS=10000",
+      "/k6/scenarios/smoke.ts"
+    ]
+  },
+  "git": {
+    "commit": "1171f4f594d5a2fd57f2f4fe4073c09deb13d155",
+    "dirty": false,
+    "dirty_files": []
+  },
+  "k6": {
+    "image": "grafana/k6:2.3.0@sha256:2dd4756ec6e14e62778916e1eb850108e4b499304c02df56760fa0bdb0fba0b8",
+    "version": "k6 v2.3.0 (commit/e088784614, go1.27.1, linux/arm64)",
+    "extensions": [],
+    "location": "container",
+    "network": "opentelemetry-demo",
+    "target": "http://frontend-proxy:8080",
+    "env": {
+      "BASE_URL": "http://frontend-proxy:8080",
+      "RUN_ID": "20261119T202009Z-smoke-8de5",
+      "RESULTS_DIR": "/results",
+      "TIMEOUT_MS": "10000"
+    },
+    "exit_code": 0,
+    "process_resources": {
+      "samples": 49,
+      "cpu_cores_mean": 0.006,
+      "cpu_cores_max": 0.0333,
+      "mem_bytes_max": 22401024,
+      "file": "k6-resources.csv"
+    }
+  },
+  "request_timeout_ms": 10000,
+  "warmup_excluded": null,
+  "warmup_note": "no warm-up window defined yet (Phase 4.5); nothing excluded",
+  "demo": {
+    "version": "3.1.0",
+    "commit": "dedc0178918e260823323b8d95005a8cb924b007",
+    "compose_project": "otel-demo",
+    "compose_args": [
+      "-p",
+      "otel-demo",
+      "--env-file",
+      "/Users/home/Documents/performance testing/demo/.upstream/.env",
+      "--env-file",
+      "/Users/home/Documents/performance testing/demo/demo.env",
+      "-f",
+      "/Users/home/Documents/performance testing/demo/.upstream/compose.yaml",
+      "-f",
+      "/Users/home/Documents/performance testing/demo/.upstream/compose.full.yaml",
+      "-f",
+      "/Users/home/Documents/performance testing/demo/.upstream/compose.observability.yaml",
+      "-f",
+      "/Users/home/Documents/performance testing/demo/.upstream/compose.extras.yaml",
+      "-f",
+      "/Users/home/Documents/performance testing/demo/compose.lab.yaml",
+      "-f",
+      "/Users/home/Documents/performance testing/demo/compose.images.yaml"
+    ],
+    "images": {
+      "frontend-proxy": {
+        "image": "ghcr.io/open-telemetry/demo:3.1.0-frontend-proxy@sha256:fd4da88bfeaadd9437a4ee00f708e129a9eedb9c48874cea8e94b034983280a1",
+        "image_id": "sha256:fd4da88bfeaadd9437a4ee00f708e129a9eedb9c48874cea8e94b034983280a1",
+        "repo_digests": [
+          "sha256:fd4da88bfeaadd9437a4ee00f708e129a9eedb9c48874cea8e94b034983280a1"
+        ],
+        "expected_digest": "sha256:fd4da88bfeaadd9437a4ee00f708e129a9eedb9c48874cea8e94b034983280a1",
+        "arch": "arm64"
+      },
+      "frontend": {
+        "image": "ghcr.io/open-telemetry/demo:3.1.0-frontend@sha256:28358db4620686eda30dfabfc770b9ff0db73819ebac0895064271b446110289",
+        "image_id": "sha256:28358db4620686eda30dfabfc770b9ff0db73819ebac0895064271b446110289",
+        "repo_digests": [
+          "sha256:28358db4620686eda30dfabfc770b9ff0db73819ebac0895064271b446110289"
+        ],
+        "expected_digest": "sha256:28358db4620686eda30dfabfc770b9ff0db73819ebac0895064271b446110289",
+        "arch": "arm64"
+      },
+      "checkout": {
+        "image": "ghcr.io/open-telemetry/demo:3.1.0-checkout@sha256:d4448ff541290fc57cca71d4bfd35d522959edf62a8bb55158467583f9fad4e2",
+        "image_id": "sha256:d4448ff541290fc57cca71d4bfd35d522959edf62a8bb55158467583f9fad4e2",
+        "repo_digests": [
+          "sha256:d4448ff541290fc57cca71d4bfd35d522959edf62a8bb55158467583f9fad4e2"
+        ],
+        "expected_digest": "sha256:d4448ff541290fc57cca71d4bfd35d522959edf62a8bb55158467583f9fad4e2",
+        "arch": "arm64"
+      },
+      "recommendation": {
+        "image": "ghcr.io/open-telemetry/demo:3.1.0-recommendation@sha256:9dd7d7c320d2794a87c78cf534892519dace661a9022eb2cad5de1b75d994c18",
+        "image_id": "sha256:9dd7d7c320d2794a87c78cf534892519dace661a9022eb2cad5de1b75d994c18",
+        "repo_digests": [
+          "sha256:9dd7d7c320d2794a87c78cf534892519dace661a9022eb2cad5de1b75d994c18"
+        ],
+        "expected_digest": "sha256:9dd7d7c320d2794a87c78cf534892519dace661a9022eb2cad5de1b75d994c18",
+        "arch": "arm64"
+      },
+      "fraud-detection": {
+        "image": "ghcr.io/open-telemetry/demo:3.1.0-fraud-detection@sha256:a07ee694304b23e3e4e1ca9bdaa7a02e3eb30d1805d87dfe95e7ea31cd3aa703",
+        "image_id": "sha256:a07ee694304b23e3e4e1ca9bdaa7a02e3eb30d1805d87dfe95e7ea31cd3aa703",
+        "repo_digests": [
+          "sha256:a07ee694304b23e3e4e1ca9bdaa7a02e3eb30d1805d87dfe95e7ea31cd3aa703"
+        ],
+        "expected_digest": "sha256:a07ee694304b23e3e4e1ca9bdaa7a02e3eb30d1805d87dfe95e7ea31cd3aa703",
+        "arch": "arm64"
+      },
+      "payment": {
+        "image": "ghcr.io/open-telemetry/demo:3.1.0-payment@sha256:10d6bd20d8a00abe7705d553ab23a4f35e29b2816ab021049e63e89d07cc9192",
+        "image_id": "sha256:10d6bd20d8a00abe7705d553ab23a4f35e29b2816ab021049e63e89d07cc9192",
+        "repo_digests": [
+          "sha256:10d6bd20d8a00abe7705d553ab23a4f35e29b2816ab021049e63e89d07cc9192"
+        ],
+        "expected_digest": "sha256:10d6bd20d8a00abe7705d553ab23a4f35e29b2816ab021049e63e89d07cc9192",
+        "arch": "arm64"
+      },
+      "shipping": {
+        "image": "ghcr.io/open-telemetry/demo:3.1.0-shipping@sha256:7130dba0e77e90575b3f04fa8be39182cffe05f39df586a6620e9d221ee31e77",
+        "image_id": "sha256:7130dba0e77e90575b3f04fa8be39182cffe05f39df586a6620e9d221ee31e77",
+        "repo_digests": [
+          "sha256:7130dba0e77e90575b3f04fa8be39182cffe05f39df586a6620e9d221ee31e77"
+        ],
+        "expected_digest": "sha256:7130dba0e77e90575b3f04fa8be39182cffe05f39df586a6620e9d221ee31e77",
+        "arch": "arm64"
+      },
+      "product-catalog": {
+        "image": "ghcr.io/open-telemetry/demo:3.1.0-product-catalog@sha256:7578cbf65fa4f0fc68e077e4f299ecccaa31d9778d407e41ab5973d247fd4b8e",
+        "image_id": "sha256:7578cbf65fa4f0fc68e077e4f299ecccaa31d9778d407e41ab5973d247fd4b8e",
+        "repo_digests": [
+          "sha256:7578cbf65fa4f0fc68e077e4f299ecccaa31d9778d407e41ab5973d247fd4b8e"
+        ],
+        "expected_digest": "sha256:7578cbf65fa4f0fc68e077e4f299ecccaa31d9778d407e41ab5973d247fd4b8e",
+        "arch": "arm64"
+      },
+      "accounting": {
+        "image": "ghcr.io/open-telemetry/demo:3.1.0-accounting@sha256:bfd9d13ac58a4eb5eb5130aa9ac1920686e2214030f4f2ab8bf178121879fcd9",
+        "image_id": "sha256:bfd9d13ac58a4eb5eb5130aa9ac1920686e2214030f4f2ab8bf178121879fcd9",
+        "repo_digests": [
+          "sha256:bfd9d13ac58a4eb5eb5130aa9ac1920686e2214030f4f2ab8bf178121879fcd9"
+        ],
+        "expected_digest": "sha256:bfd9d13ac58a4eb5eb5130aa9ac1920686e2214030f4f2ab8bf178121879fcd9",
+        "arch": "arm64"
+      },
+      "ad": {
+        "image": "ghcr.io/open-telemetry/demo:3.1.0-ad@sha256:dfd7a4697116d7f961f2c6e8be1bd187f2af7555d6d4138c016097921d7c7ed0",
+        "image_id": "sha256:dfd7a4697116d7f961f2c6e8be1bd187f2af7555d6d4138c016097921d7c7ed0",
+        "repo_digests": [
+          "sha256:dfd7a4697116d7f961f2c6e8be1bd187f2af7555d6d4138c016097921d7c7ed0"
+        ],
+        "expected_digest": "sha256:dfd7a4697116d7f961f2c6e8be1bd187f2af7555d6d4138c016097921d7c7ed0",
+        "arch": "arm64"
+      },
+      "cart": {
+        "image": "ghcr.io/open-telemetry/demo:3.1.0-cart@sha256:17c881cf29af5032e47d3dbd677afb132cbde66aad6355c7c2af8a6dbfc80581",
+        "image_id": "sha256:17c881cf29af5032e47d3dbd677afb132cbde66aad6355c7c2af8a6dbfc80581",
+        "repo_digests": [
+          "sha256:17c881cf29af5032e47d3dbd677afb132cbde66aad6355c7c2af8a6dbfc80581"
+        ],
+        "expected_digest": "sha256:17c881cf29af5032e47d3dbd677afb132cbde66aad6355c7c2af8a6dbfc80581",
+        "arch": "arm64"
+      },
+      "flagd-ui": {
+        "image": "ghcr.io/open-telemetry/demo:3.1.0-flagd-ui@sha256:97a3d37e709f80e2018cdc0d45ea12d5b59092693e0e003d65089da966107062",
+        "image_id": "sha256:97a3d37e709f80e2018cdc0d45ea12d5b59092693e0e003d65089da966107062",
+        "repo_digests": [
+          "sha256:97a3d37e709f80e2018cdc0d45ea12d5b59092693e0e003d65089da966107062"
+        ],
+        "expected_digest": "sha256:97a3d37e709f80e2018cdc0d45ea12d5b59092693e0e003d65089da966107062",
+        "arch": "arm64"
+      },
+      "astronomy-db": {
+        "image": "postgres:18.4@sha256:a02db8cac496f15b094798a38254f14d6e00741f709360e5e00bb6668ea31636",
+        "image_id": "sha256:a02db8cac496f15b094798a38254f14d6e00741f709360e5e00bb6668ea31636",
+        "repo_digests": [
+          "sha256:a02db8cac496f15b094798a38254f14d6e00741f709360e5e00bb6668ea31636"
+        ],
+        "expected_digest": "sha256:a02db8cac496f15b094798a38254f14d6e00741f709360e5e00bb6668ea31636",
+        "arch": "arm64"
+      },
+      "flagd": {
+        "image": "ghcr.io/open-feature/flagd:v0.16.0@sha256:32234e63c1d0634883aabd31cbd46802934aaaef0153dfd653b5d1017940bb4e",
+        "image_id": "sha256:32234e63c1d0634883aabd31cbd46802934aaaef0153dfd653b5d1017940bb4e",
+        "repo_digests": [
+          "sha256:32234e63c1d0634883aabd31cbd46802934aaaef0153dfd653b5d1017940bb4e"
+        ],
+        "expected_digest": "sha256:32234e63c1d0634883aabd31cbd46802934aaaef0153dfd653b5d1017940bb4e",
+        "arch": "arm64"
+      },
+      "quote": {
+        "image": "ghcr.io/open-telemetry/demo:3.1.0-quote@sha256:e0b1ab3784fdbf0112521d3c5c733643f1cefa4eef5f592f845977465400181e",
+        "image_id": "sha256:e0b1ab3784fdbf0112521d3c5c733643f1cefa4eef5f592f845977465400181e",
+        "repo_digests": [
+          "sha256:e0b1ab3784fdbf0112521d3c5c733643f1cefa4eef5f592f845977465400181e"
+        ],
+        "expected_digest": "sha256:e0b1ab3784fdbf0112521d3c5c733643f1cefa4eef5f592f845977465400181e",
+        "arch": "arm64"
+      },
+      "kafka": {
+        "image": "ghcr.io/open-telemetry/demo:3.1.0-kafka@sha256:4402ba7fd54470782a445f07c67e1d3f44d88ac8c5c0abf5d8298190a3f7a6ee",
+        "image_id": "sha256:4402ba7fd54470782a445f07c67e1d3f44d88ac8c5c0abf5d8298190a3f7a6ee",
+        "repo_digests": [
+          "sha256:4402ba7fd54470782a445f07c67e1d3f44d88ac8c5c0abf5d8298190a3f7a6ee"
+        ],
+        "expected_digest": "sha256:4402ba7fd54470782a445f07c67e1d3f44d88ac8c5c0abf5d8298190a3f7a6ee",
+        "arch": "arm64"
+      },
+      "telemetry-docs": {
+        "image": "ghcr.io/open-telemetry/demo:3.1.0-telemetry-docs@sha256:3f257a843222df2462d903fd57b12af5f31dc99a0f174b45136a4f3ba5c71203",
+        "image_id": "sha256:3f257a843222df2462d903fd57b12af5f31dc99a0f174b45136a4f3ba5c71203",
+        "repo_digests": [
+          "sha256:3f257a843222df2462d903fd57b12af5f31dc99a0f174b45136a4f3ba5c71203"
+        ],
+        "expected_digest": "sha256:3f257a843222df2462d903fd57b12af5f31dc99a0f174b45136a4f3ba5c71203",
+        "arch": "arm64"
+      },
+      "image-provider": {
+        "image": "ghcr.io/open-telemetry/demo:3.1.0-image-provider@sha256:46d1a7e95109c0064122ca0bfb49cd05191fb90a6264b6be508e0d98f2c963f1",
+        "image_id": "sha256:46d1a7e95109c0064122ca0bfb49cd05191fb90a6264b6be508e0d98f2c963f1",
+        "repo_digests": [
+          "sha256:46d1a7e95109c0064122ca0bfb49cd05191fb90a6264b6be508e0d98f2c963f1"
+        ],
+        "expected_digest": "sha256:46d1a7e95109c0064122ca0bfb49cd05191fb90a6264b6be508e0d98f2c963f1",
+        "arch": "arm64"
+      },
+      "email": {
+        "image": "ghcr.io/open-telemetry/demo:3.1.0-email@sha256:bd7754c1e0986f892b86ed6ab9067a372640d342ff8eee2074bedb61c649ce71",
+        "image_id": "sha256:bd7754c1e0986f892b86ed6ab9067a372640d342ff8eee2074bedb61c649ce71",
+        "repo_digests": [
+          "sha256:bd7754c1e0986f892b86ed6ab9067a372640d342ff8eee2074bedb61c649ce71"
+        ],
+        "expected_digest": "sha256:bd7754c1e0986f892b86ed6ab9067a372640d342ff8eee2074bedb61c649ce71",
+        "arch": "arm64"
+      },
+      "valkey-cart": {
+        "image": "ghcr.io/valkey-io/valkey:9.0.4-alpine3.23@sha256:107b203169a20ef7c87548c157f4e4a833dbbbd20fefd3a26740b7f98ac80216",
+        "image_id": "sha256:107b203169a20ef7c87548c157f4e4a833dbbbd20fefd3a26740b7f98ac80216",
+        "repo_digests": [
+          "sha256:107b203169a20ef7c87548c157f4e4a833dbbbd20fefd3a26740b7f98ac80216"
+        ],
+        "expected_digest": "sha256:107b203169a20ef7c87548c157f4e4a833dbbbd20fefd3a26740b7f98ac80216",
+        "arch": "arm64"
+      },
+      "currency": {
+        "image": "ghcr.io/open-telemetry/demo:3.1.0-currency@sha256:ba65e72d5841f909e0ee09498572092923f59e249ae4bf084ab63a82b33811c1",
+        "image_id": "sha256:ba65e72d5841f909e0ee09498572092923f59e249ae4bf084ab63a82b33811c1",
+        "repo_digests": [
+          "sha256:ba65e72d5841f909e0ee09498572092923f59e249ae4bf084ab63a82b33811c1"
+        ],
+        "expected_digest": "sha256:ba65e72d5841f909e0ee09498572092923f59e249ae4bf084ab63a82b33811c1",
+        "arch": "arm64"
+      },
+      "otel-collector": {
+        "image": "ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib:0.159.0@sha256:1f2c54a30e713fac6b3ae77a1ec84010c2007e29ced8ec666214fc2f6739c1cc",
+        "image_id": "sha256:1f2c54a30e713fac6b3ae77a1ec84010c2007e29ced8ec666214fc2f6739c1cc",
+        "repo_digests": [
+          "sha256:1f2c54a30e713fac6b3ae77a1ec84010c2007e29ced8ec666214fc2f6739c1cc"
+        ],
+        "expected_digest": "sha256:1f2c54a30e713fac6b3ae77a1ec84010c2007e29ced8ec666214fc2f6739c1cc",
+        "arch": "arm64"
+      },
+      "jaeger": {
+        "image": "quay.io/jaegertracing/jaeger:2.19.0@sha256:ede4864215be4cd85bd8c3129a2fea6c5713c5653c7282c429dba123014bc68b",
+        "image_id": "sha256:ede4864215be4cd85bd8c3129a2fea6c5713c5653c7282c429dba123014bc68b",
+        "repo_digests": [
+          "sha256:ede4864215be4cd85bd8c3129a2fea6c5713c5653c7282c429dba123014bc68b"
+        ],
+        "expected_digest": "sha256:ede4864215be4cd85bd8c3129a2fea6c5713c5653c7282c429dba123014bc68b",
+        "arch": "arm64"
+      },
+      "opensearch": {
+        "image": "ghcr.io/open-telemetry/demo:3.1.0-opensearch@sha256:0a8401e9db8f7638b189a822a1a56a54dd4598cc42891ef59e3d003b2768b4ad",
+        "image_id": "sha256:0a8401e9db8f7638b189a822a1a56a54dd4598cc42891ef59e3d003b2768b4ad",
+        "repo_digests": [
+          "sha256:0a8401e9db8f7638b189a822a1a56a54dd4598cc42891ef59e3d003b2768b4ad"
+        ],
+        "expected_digest": "sha256:0a8401e9db8f7638b189a822a1a56a54dd4598cc42891ef59e3d003b2768b4ad",
+        "arch": "arm64"
+      },
+      "grafana": {
+        "image": "grafana/grafana:13.1.0@sha256:121a7a9ece6dc10b969f1f96eed64b4f07dfac0d0b8abc070f7cb83bbde86f63",
+        "image_id": "sha256:121a7a9ece6dc10b969f1f96eed64b4f07dfac0d0b8abc070f7cb83bbde86f63",
+        "repo_digests": [
+          "sha256:121a7a9ece6dc10b969f1f96eed64b4f07dfac0d0b8abc070f7cb83bbde86f63"
+        ],
+        "expected_digest": "sha256:121a7a9ece6dc10b969f1f96eed64b4f07dfac0d0b8abc070f7cb83bbde86f63",
+        "arch": "arm64"
+      },
+      "prometheus": {
+        "image": "quay.io/prometheus/prometheus:v3.13.1@sha256:3c42b892cf723fa54d2f262c37a0e1f80aa8c8ddb1da7b9b0df9455a35a7f893",
+        "image_id": "sha256:3c42b892cf723fa54d2f262c37a0e1f80aa8c8ddb1da7b9b0df9455a35a7f893",
+        "repo_digests": [
+          "sha256:3c42b892cf723fa54d2f262c37a0e1f80aa8c8ddb1da7b9b0df9455a35a7f893"
+        ],
+        "expected_digest": "sha256:3c42b892cf723fa54d2f262c37a0e1f80aa8c8ddb1da7b9b0df9455a35a7f893",
+        "arch": "arm64"
+      },
+      "opamp-server": {
+        "image": "ghcr.io/open-telemetry/demo:3.1.0-opamp-server@sha256:3b6c6220bf9c7d8e6fdb8d1966316e80c5ac2004db6ae29c46681009d50e2093",
+        "image_id": "sha256:3b6c6220bf9c7d8e6fdb8d1966316e80c5ac2004db6ae29c46681009d50e2093",
+        "repo_digests": [
+          "sha256:3b6c6220bf9c7d8e6fdb8d1966316e80c5ac2004db6ae29c46681009d50e2093"
+        ],
+        "expected_digest": "sha256:3b6c6220bf9c7d8e6fdb8d1966316e80c5ac2004db6ae29c46681009d50e2093",
+        "arch": "arm64"
+      }
+    },
+    "digest_mismatches": []
+  },
+  "feature_flags": {
+    "adFailure": "off",
+    "adHighCpu": "off",
+    "adManualGc": "off",
+    "aiRunawayAgent": "off",
+    "aiSlowResponse": "off",
+    "cartFailure": "off",
+    "emailMemoryLeak": "off",
+    "emitRawPii": "off",
+    "failedReadinessProbe": "off",
+    "imageSlowLoad": "off",
+    "intlShippingSlowdown": "off",
+    "kafkaQueueProblems": "off",
+    "loadGeneratorFloodHomepage": "off",
+    "paymentFailure": "off",
+    "paymentUnreachable": "off",
+    "productCatalogFailure": "off",
+    "productCatalogLockContention": "off",
+    "recommendationCacheFailure": "off"
+  },
+  "resource_limits": {
+    "accounting": {
+      "memory_bytes": 167772160,
+      "cpus": null,
+      "gomemlimit": null
+    },
+    "ad": {
+      "memory_bytes": 314572800,
+      "cpus": null,
+      "gomemlimit": null
+    },
+    "astronomy-db": {
+      "memory_bytes": 83886080,
+      "cpus": null,
+      "gomemlimit": null
+    },
+    "cart": {
+      "memory_bytes": 167772160,
+      "cpus": null,
+      "gomemlimit": null
+    },
+    "checkout": {
+      "memory_bytes": 67108864,
+      "cpus": null,
+      "gomemlimit": "48MiB"
+    },
+    "currency": {
+      "memory_bytes": 20971520,
+      "cpus": null,
+      "gomemlimit": null
+    },
+    "email": {
+      "memory_bytes": 104857600,
+      "cpus": null,
+      "gomemlimit": null
+    },
+    "flagd": {
+      "memory_bytes": 78643200,
+      "cpus": null,
+      "gomemlimit": "60MiB"
+    },
+    "flagd-ui": {
+      "memory_bytes": 209715200,
+      "cpus": null,
+      "gomemlimit": null
+    },
+    "fraud-detection": {
+      "memory_bytes": 314572800,
+      "cpus": null,
+      "gomemlimit": null
+    },
+    "frontend": {
+      "memory_bytes": 262144000,
+      "cpus": null,
+      "gomemlimit": null
+    },
+    "frontend-proxy": {
+      "memory_bytes": 94371840,
+      "cpus": null,
+      "gomemlimit": null
+    },
+    "grafana": {
+      "memory_bytes": 183500800,
+      "cpus": null,
+      "gomemlimit": null
+    },
+    "image-provider": {
+      "memory_bytes": 125829120,
+      "cpus": null,
+      "gomemlimit": null
+    },
+    "jaeger": {
+      "memory_bytes": 1258291200,
+      "cpus": null,
+      "gomemlimit": null
+    },
+    "kafka": {
+      "memory_bytes": 838860800,
+      "cpus": null,
+      "gomemlimit": null
+    },
+    "opamp-server": {
+      "memory_bytes": 68157440,
+      "cpus": null,
+      "gomemlimit": null
+    },
+    "opensearch": {
+      "memory_bytes": 1610612736,
+      "cpus": null,
+      "gomemlimit": null
+    },
+    "otel-collector": {
+      "memory_bytes": 419430400,
+      "cpus": null,
+      "gomemlimit": "160MiB"
+    },
+    "payment": {
+      "memory_bytes": 146800640,
+      "cpus": null,
+      "gomemlimit": null
+    },
+    "product-catalog": {
+      "memory_bytes": 67108864,
+      "cpus": null,
+      "gomemlimit": "48MiB"
+    },
+    "prometheus": {
+      "memory_bytes": 209715200,
+      "cpus": null,
+      "gomemlimit": null
+    },
+    "quote": {
+      "memory_bytes": 41943040,
+      "cpus": null,
+      "gomemlimit": null
+    },
+    "recommendation": {
+      "memory_bytes": 524288000,
+      "cpus": null,
+      "gomemlimit": null
+    },
+    "shipping": {
+      "memory_bytes": 20971520,
+      "cpus": null,
+      "gomemlimit": null
+    },
+    "telemetry-docs": {
+      "memory_bytes": 104857600,
+      "cpus": null,
+      "gomemlimit": null
+    },
+    "valkey-cart": {
+      "memory_bytes": 20971520,
+      "cpus": null,
+      "gomemlimit": null
+    }
+  },
+  "tracing": {
+    "sampler": {
+      "accounting": "parentbased_always_on (SDK default)",
+      "ad": "parentbased_always_on (SDK default)",
+      "cart": "parentbased_always_on (SDK default)",
+      "checkout": "parentbased_always_on (SDK default)",
+      "currency": "parentbased_always_on (SDK default)",
+      "email": "parentbased_always_on (SDK default)",
+      "flagd": "parentbased_always_on (SDK default)",
+      "flagd-ui": "parentbased_always_on (SDK default)",
+      "fraud-detection": "parentbased_always_on (SDK default)",
+      "frontend": "parentbased_always_on (SDK default)",
+      "frontend-proxy": "parentbased_always_on (SDK default)",
+      "image-provider": "parentbased_always_on (SDK default)",
+      "jaeger": "parentbased_always_on (SDK default)",
+      "kafka": "parentbased_always_on (SDK default)",
+      "otel-collector": "parentbased_always_on (SDK default)",
+      "payment": "parentbased_always_on (SDK default)",
+      "product-catalog": "parentbased_always_on (SDK default)",
+      "quote": "parentbased_always_on (SDK default)",
+      "recommendation": "parentbased_always_on (SDK default)",
+      "shipping": "parentbased_always_on (SDK default)",
+      "telemetry-docs": "parentbased_always_on (SDK default)"
+    },
+    "jaeger_memory_max_traces": "25000"
+  },
+  "metric_intervals": {
+    "sdk_export_interval_ms": {
+      "accounting": "10000",
+      "ad": "10000",
+      "cart": "10000",
+      "checkout": "10000",
+      "currency": "10000",
+      "email": "10000",
+      "flagd": "10000",
+      "flagd-ui": "10000",
+      "fraud-detection": "10000",
+      "frontend": "10000",
+      "frontend-proxy": "10000",
+      "image-provider": "10000",
+      "jaeger": null,
+      "kafka": "10000",
+      "otel-collector": null,
+      "payment": "10000",
+      "product-catalog": "10000",
+      "quote": "10000",
+      "recommendation": "10000",
+      "shipping": "10000",
+      "telemetry-docs": null
+    },
+    "docker_stats_receiver_s": "10 (receiver default, upstream config sets none)",
+    "prometheus_scrape": "none: no scrape targets, all metrics arrive over OTLP",
+    "k6": "not exported to Prometheus in Phase 1; raw output only"
+  },
+  "reset": {
+    "ran": true,
+    "passed": true,
+    "file": "reset.json"
+  },
+  "loadgen_confirmed_off": true,
+  "host": {
+    "model": "Mac16,5",
+    "chip": "Apple M4 Max",
+    "cores": 16,
+    "memory_bytes": 68719476736,
+    "macos": "26.0",
+    "macos_build": "25A354",
+    "docker": {
+      "desktop": "Docker Desktop 4.95.0 (242831)",
+      "engine": "29.8.2",
+      "compose": "5.6.0",
+      "vm_cpus": 16,
+      "vm_memory_bytes": 12479537152,
+      "kernel": "7.0.14-linuxkit"
+    }
+  },
+  "conditions": {
+    "before": {
+      "power_source": "AC Power",
+      "low_power_mode": false,
+      "thermal_state": 0,
+      "pmset_therm": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded",
+      "powermode": "0",
+      "load_average": [
+        3.34,
+        3.29,
+        3.22
+      ],
+      "top_processes": [
+        {
+          "pid": 43402,
+          "cpu_percent": 63.6,
+          "command": "com.apple.Virtua"
+        },
+        {
+          "pid": 400,
+          "cpu_percent": 34.6,
+          "command": "WindowServer"
+        },
+        {
+          "pid": 0,
+          "cpu_percent": 10.1,
+          "command": "kernel_task"
+        },
+        {
+          "pid": 27792,
+          "cpu_percent": 5.2,
+          "command": "Terminal"
+        },
+        {
+          "pid": 46843,
+          "cpu_percent": 5.0,
+          "command": "top"
+        },
+        {
+          "pid": 707,
+          "cpu_percent": 5.0,
+          "command": "NotificationCent"
+        },
+        {
+          "pid": 599,
+          "cpu_percent": 4.7,
+          "command": "sysmond"
+        },
+        {
+          "pid": 676,
+          "cpu_percent": 3.4,
+          "command": "Activity Monitor"
+        },
+        {
+          "pid": 13312,
+          "cpu_percent": 3.3,
+          "command": "com.docker.backe"
+        },
+        {
+          "pid": 37494,
+          "cpu_percent": 3.1,
+          "command": "2.1.326"
+        },
+        {
+          "pid": 558,
+          "cpu_percent": 1.2,
+          "command": "searchpartyd"
+        },
+        {
+          "pid": 379,
+          "cpu_percent": 1.1,
+          "command": "dasd"
+        },
+        {
+          "pid": 92362,
+          "cpu_percent": 0.6,
+          "command": "2.1.325"
+        },
+        {
+          "pid": 76652,
+          "cpu_percent": 0.4,
+          "command": "Code Helper (Plu"
+        },
+        {
+          "pid": 13342,
+          "cpu_percent": 0.3,
+          "command": "Docker Desktop"
+        }
+      ],
+      "heavy_apps_running": [],
+      "not_captured": [
+        "cpu_frequency",
+        "cpu_temperature",
+        "power_draw"
+      ]
+    },
+    "after": {
+      "power_source": "AC Power",
+      "low_power_mode": false,
+      "thermal_state": 0,
+      "pmset_therm": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded",
+      "powermode": "0",
+      "load_average": [
+        3.37,
+        3.34,
+        3.24
+      ],
+      "top_processes": [
+        {
+          "pid": 43402,
+          "cpu_percent": 80.5,
+          "command": "com.apple.Virtua"
+        },
+        {
+          "pid": 400,
+          "cpu_percent": 21.8,
+          "command": "WindowServer"
+        },
+        {
+          "pid": 0,
+          "cpu_percent": 7.0,
+          "command": "kernel_task"
+        },
+        {
+          "pid": 27792,
+          "cpu_percent": 6.1,
+          "command": "Terminal"
+        },
+        {
+          "pid": 37494,
+          "cpu_percent": 5.4,
+          "command": "2.1.326"
+        },
+        {
+          "pid": 13312,
+          "cpu_percent": 5.4,
+          "command": "com.docker.backe"
+        },
+        {
+          "pid": 599,
+          "cpu_percent": 4.5,
+          "command": "sysmond"
+        },
+        {
+          "pid": 46918,
+          "cpu_percent": 3.9,
+          "command": "top"
+        },
+        {
+          "pid": 676,
+          "cpu_percent": 2.7,
+          "command": "Activity Monitor"
+        },
+        {
+          "pid": 13370,
+          "cpu_percent": 1.0,
+          "command": "Docker Desktop H"
+        },
+        {
+          "pid": 92362,
+          "cpu_percent": 0.7,
+          "command": "2.1.325"
+        },
+        {
+          "pid": 1,
+          "cpu_percent": 0.5,
+          "command": "launchd"
+        },
+        {
+          "pid": 13342,
+          "cpu_percent": 0.5,
+          "command": "Docker Desktop"
+        },
+        {
+          "pid": 60239,
+          "cpu_percent": 0.4,
+          "command": "2.1.323"
+        },
+        {
+          "pid": 7548,
+          "cpu_percent": 0.4,
+          "command": "mds"
+        }
+      ],
+      "heavy_apps_running": [],
+      "not_captured": [
+        "cpu_frequency",
+        "cpu_temperature",
+        "power_draw"
+      ]
+    }
+  },
+  "other_containers": [],
+  "files": [
+    "k6-raw.json.gz",
+    "k6-resources.csv",
+    "k6-stdout.log",
+    "k6-summary.json",
+    "report.json",
+    "reset.json",
+    "scenario-plan.json",
+    "manifest.json"
+  ]
+}

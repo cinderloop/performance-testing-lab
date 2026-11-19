@@ -1,0 +1,373 @@
+{
+ "run_dir": "20261119T202009Z-smoke-8de5",
+ "source": "samples.csv.gz (every request); percentiles: linear interpolation (type 7)",
+ "warmup_excluded": null,
+ "overall": {
+  "requests": 112,
+  "error_rate": 0.0,
+  "success_ms": {
+   "count": 112,
+   "min": 0.513,
+   "median": 4.911,
+   "p90": 11.668,
+   "p95": 23.11,
+   "p99": 60.248,
+   "max": 113.281,
+   "mean": 7.835
+  },
+  "failure_ms": {
+   "count": 0
+  },
+  "failures_by_status_and_error": {}
+ },
+ "by_group": {
+  "api": {
+   "requests": 100,
+   "error_rate": 0.0,
+   "success_ms": {
+    "count": 100,
+    "min": 1.469,
+    "median": 5.033,
+    "p90": 11.705,
+    "p95": 26.231,
+    "p99": 63.305,
+    "max": 113.281,
+    "mean": 8.297
+   },
+   "failure_ms": {
+    "count": 0
+   },
+   "failures_by_status_and_error": {}
+  },
+  "flags": {
+   "requests": 6,
+   "error_rate": 0.0,
+   "success_ms": {
+    "count": 6,
+    "min": 0.513,
+    "median": 0.679,
+    "p90": 0.941,
+    "p95": 1.06,
+    "p99": 1.155,
+    "max": 1.179,
+    "mean": 0.727
+   },
+   "failure_ms": {
+    "count": 0
+   },
+   "failures_by_status_and_error": {}
+  },
+  "page": {
+   "requests": 6,
+   "error_rate": 0.0,
+   "success_ms": {
+    "count": 6,
+    "min": 2.873,
+    "median": 5.091,
+    "p90": 13.484,
+    "p95": 17.055,
+    "p99": 19.912,
+    "max": 20.626,
+    "mean": 7.259
+   },
+   "failure_ms": {
+    "count": 0
+   },
+   "failures_by_status_and_error": {}
+  }
+ },
+ "by_endpoint": {
+  "api_ads": {
+   "requests": 18,
+   "error_rate": 0.0,
+   "success_ms": {
+    "count": 18,
+    "min": 2.955,
+    "median": 5.04,
+    "p90": 7.428,
+    "p95": 15.806,
+    "p99": 53.402,
+    "max": 62.801,
+    "mean": 8.11
+   },
+   "failure_ms": {
+    "count": 0
+   },
+   "failures_by_status_and_error": {}
+  },
+  "api_cart_add": {
+   "requests": 5,
+   "error_rate": 0.0,
+   "success_ms": {
+    "count": 5,
+    "min": 5.022,
+    "median": 11.98,
+    "p90": 22.608,
+    "p95": 25.215,
+    "p99": 27.301,
+    "max": 27.823,
+    "mean": 13.462
+   },
+   "failure_ms": {
+    "count": 0
+   },
+   "failures_by_status_and_error": {}
+  },
+  "api_cart_get": {
+   "requests": 19,
+   "error_rate": 0.0,
+   "success_ms": {
+    "count": 19,
+    "min": 1.628,
+    "median": 2.453,
+    "p90": 6.781,
+    "p95": 9.97,
+    "p99": 31.324,
+    "max": 36.662,
+    "mean": 4.86
+   },
+   "failure_ms": {
+    "count": 0
+   },
+   "failures_by_status_and_error": {}
+  },
+  "api_checkout": {
+   "requests": 2,
+   "error_rate": 0.0,
+   "success_ms": {
+    "count": 2,
+    "min": 39.593,
+    "median": 76.437,
+    "p90": 105.912,
+    "p95": 109.597,
+    "p99": 112.544,
+    "max": 113.281,
+    "mean": 76.437
+   },
+   "failure_ms": {
+    "count": 0
+   },
+   "failures_by_status_and_error": {}
+  },
+  "api_currency": {
+   "requests": 6,
+   "error_rate": 0.0,
+   "success_ms": {
+    "count": 6,
+    "min": 1.494,
+    "median": 1.936,
+    "p90": 3.374,
+    "p95": 3.977,
+    "p99": 4.459,
+    "max": 4.579,
+    "mean": 2.296
+   },
+   "failure_ms": {
+    "count": 0
+   },
+   "failures_by_status_and_error": {}
+  },
+  "api_product": {
+   "requests": 13,
+   "error_rate": 0.0,
+   "success_ms": {
+    "count": 13,
+    "min": 2.278,
+    "median": 4.936,
+    "p90": 10.5,
+    "p95": 11.636,
+    "p99": 11.666,
+    "max": 11.674,
+    "mean": 5.236
+   },
+   "failure_ms": {
+    "count": 0
+   },
+   "failures_by_status_and_error": {}
+  },
+  "api_products_list": {
+   "requests": 9,
+   "error_rate": 0.0,
+   "success_ms": {
+    "count": 9,
+    "min": 1.469,
+    "median": 1.927,
+    "p90": 7.328,
+    "p95": 16.738,
+    "p99": 24.265,
+    "max": 26.147,
+    "mean": 4.677
+   },
+   "failure_ms": {
+    "count": 0
+   },
+   "failures_by_status_and_error": {}
+  },
+  "api_recommendations": {
+   "requests": 23,
+   "error_rate": 0.0,
+   "success_ms": {
+    "count": 23,
+    "min": 4.329,
+    "median": 9.1,
+    "p90": 11.269,
+    "p95": 11.48,
+    "p99": 12.448,
+    "max": 12.715,
+    "mean": 8.928
+   },
+   "failure_ms": {
+    "count": 0
+   },
+   "failures_by_status_and_error": {}
+  },
+  "api_shipping": {
+   "requests": 5,
+   "error_rate": 0.0,
+   "success_ms": {
+    "count": 5,
+    "min": 4.314,
+    "median": 6.126,
+    "p90": 14.585,
+    "p95": 17.359,
+    "p99": 19.578,
+    "max": 20.133,
+    "mean": 8.376
+   },
+   "failure_ms": {
+    "count": 0
+   },
+   "failures_by_status_and_error": {}
+  },
+  "flags_resolve_all": {
+   "requests": 6,
+   "error_rate": 0.0,
+   "success_ms": {
+    "count": 6,
+    "min": 0.513,
+    "median": 0.679,
+    "p90": 0.941,
+    "p95": 1.06,
+    "p99": 1.155,
+    "max": 1.179,
+    "mean": 0.727
+   },
+   "failure_ms": {
+    "count": 0
+   },
+   "failures_by_status_and_error": {}
+  },
+  "page_home": {
+   "requests": 4,
+   "error_rate": 0.0,
+   "success_ms": {
+    "count": 4,
+    "min": 2.873,
+    "median": 4.507,
+    "p90": 16.083,
+    "p95": 18.355,
+    "p99": 20.172,
+    "max": 20.626,
+    "mean": 8.128
+   },
+   "failure_ms": {
+    "count": 0
+   },
+   "failures_by_status_and_error": {}
+  },
+  "page_product": {
+   "requests": 2,
+   "error_rate": 0.0,
+   "success_ms": {
+    "count": 2,
+    "min": 4.698,
+    "median": 5.52,
+    "p90": 6.178,
+    "p95": 6.26,
+    "p99": 6.326,
+    "max": 6.343,
+    "mean": 5.52
+   },
+   "failure_ms": {
+    "count": 0
+   },
+   "failures_by_status_and_error": {}
+  }
+ },
+ "by_journey": {
+  "abandon_cart": {
+   "requests": 38,
+   "error_rate": 0.0,
+   "success_ms": {
+    "count": 38,
+    "min": 0.671,
+    "median": 5.795,
+    "p90": 11.535,
+    "p95": 13.203,
+    "p99": 24.977,
+    "max": 27.823,
+    "mean": 6.554
+   },
+   "failure_ms": {
+    "count": 0
+   },
+   "failures_by_status_and_error": {}
+  },
+  "browse": {
+   "requests": 26,
+   "error_rate": 0.0,
+   "success_ms": {
+    "count": 26,
+    "min": 0.688,
+    "median": 4.33,
+    "p90": 16.67,
+    "p95": 32.653,
+    "p99": 56.266,
+    "max": 62.801,
+    "mean": 9.068
+   },
+   "failure_ms": {
+    "count": 0
+   },
+   "failures_by_status_and_error": {}
+  },
+  "buy": {
+   "requests": 47,
+   "error_rate": 0.0,
+   "success_ms": {
+    "count": 47,
+    "min": 0.513,
+    "median": 4.698,
+    "p90": 9.39,
+    "p95": 13.413,
+    "p99": 79.385,
+    "max": 113.281,
+    "mean": 7.8
+   },
+   "failure_ms": {
+    "count": 0
+   },
+   "failures_by_status_and_error": {}
+  },
+  "setup": {
+   "requests": 1,
+   "error_rate": 0.0,
+   "success_ms": {
+    "count": 1,
+    "min": 26.147,
+    "median": 26.147,
+    "p90": 26.147,
+    "p95": 26.147,
+    "p99": 26.147,
+    "max": 26.147,
+    "mean": 26.147
+   },
+   "failure_ms": {
+    "count": 0
+   },
+   "failures_by_status_and_error": {}
+  }
+ },
+ "sessions_completed": 6,
+ "dropped_iterations": 0
+}
