@@ -24,3 +24,14 @@ Regardless of the setting, the reset protocol ends with a **health gate**. The r
 - The baseline doesn't reflect upstream defaults for these two services. The docs say so, and the manifest shows the difference.
 - 48 MiB is a proposal. Phase 2 load tests confirm the headroom, and if they show it's too tight, the limit gets a new ADR rather than a silent change.
 - Docker VM memory needs about 90 MB more in total. That's negligible next to the ≥ 12 GB recommendation (C11).
+
+## Update 2026-11-20 (Phase 1): health gate as implemented
+
+The thresholds left open above are now fixed in `src/perflab/reset.py` and documented in [reset-protocol.md](../reset-protocol.md):
+
+- **Idle CPU:** product-catalog and checkout must each average ≤ **0.05 cores** over the reset's 30 s settle window, measured from cumulative cgroup CPU through the Docker API (not `docker stats` snapshots, which spike §3 showed to be misleading).
+- **Go memory:** `go_memory_used_bytes` (summed over memory types) must be below `go_memory_limit_bytes` for both services, from Prometheus. Missing data fails the gate.
+
+**Change from the original wording:** the "product-detail median on a short probe" check was dropped. It needs a baseline that doesn't exist before Phase 2, it sends extra traffic into every reset, and the GC spiral shows up directly in the CPU and memory checks. If Phase 2 shows a case the CPU gate misses, a probe will be added by a new ADR.
+
+The first resets under the new limits passed with both services at about 0.003 cores, and product-catalog at about 15.6 MiB used of 48 MiB. That's just under upstream's old 16 MiB limit, at idle, which supports the decision.
