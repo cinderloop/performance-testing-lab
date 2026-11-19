@@ -55,3 +55,7 @@ UIs (loopback only): shop http://localhost:8080, Grafana http://localhost:8080/g
 ## Credit
 
 The system under test is the [OpenTelemetry Demo](https://github.com/open-telemetry/opentelemetry-demo), © The OpenTelemetry Authors, Apache License 2.0. It's used through its published images and configuration overrides; see [demo/README.md](demo/README.md).
+
+## Licence
+
+[MIT](LICENSE) © 2026 Ashen J. This covers this repository's own code and docs; the OpenTelemetry Demo stays under its own Apache 2.0 licence.
