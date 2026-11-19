@@ -6,7 +6,9 @@ import argparse
 import json
 import subprocess
 import sys
+from pathlib import Path
 
+from analysis import report
 from perflab import compose
 from perflab.paths import K6_DIR, UPSTREAM_DIR, load_pin
 from perflab.ports import port_violations, published_ports
@@ -61,7 +63,7 @@ def cmd_ports(_: argparse.Namespace) -> int:
     return 1 if problems else 0
 
 
-SCRIPT_DIRS = ("scenarios", "journeys", "experiments")
+SCRIPT_DIRS = ("scenarios", "experiments")
 GUARD_PROBE_URL = "https://example.com"
 
 
@@ -82,7 +84,13 @@ def cmd_inspect(_: argparse.Namespace) -> int:
         "-v",
         f"{K6_DIR}:/k6:ro",
     ]
-    scripts = sorted(p for d in SCRIPT_DIRS for p in (K6_DIR / d).rglob("*.ts"))
+    # Entry scripts only: modules that declare k6 options (helpers like common.ts don't).
+    scripts = sorted(
+        p
+        for d in SCRIPT_DIRS
+        for p in (K6_DIR / d).rglob("*.ts")
+        if "export const options" in p.read_text()
+    )
     failed = 0
     for script in scripts:
         rel = script.relative_to(K6_DIR)
@@ -133,6 +141,16 @@ def cmd_reset(args: argparse.Namespace) -> int:
     return 0 if report.passed else 1
 
 
+def cmd_report(args: argparse.Namespace) -> int:
+    """Rebuild report.json for a run from its raw data."""
+    run_dir = Path(args.run_dir)
+    if not (run_dir / "k6-raw.json.gz").exists():
+        print(f"no k6-raw.json.gz in {run_dir}", file=sys.stderr)
+        return 2
+    print(report.text(report.write(run_dir)), end="")
+    return 0
+
+
 def cmd_run(args: argparse.Namespace) -> int:
     return run(
         RunOptions(
@@ -165,10 +183,13 @@ def main(argv: list[str] | None = None) -> int:
     r = sub.add_parser("reset", help="run the reset protocol and verify the start state")
     r.add_argument("--json", action="store_true", help="print the full reset report")
     r.set_defaults(f=cmd_reset)
+    rep = sub.add_parser("report", help="(re)build report.json for a run from its raw data")
+    rep.add_argument("run_dir", help="results/<run-id>")
+    rep.set_defaults(f=cmd_report)
     run_p = sub.add_parser(
         "run", help="reset, run a k6 scenario in a container, write results/<run-id>/"
     )
-    run_p.add_argument("scenario", help="script under k6/, e.g. scenarios/foundation-check.ts")
+    run_p.add_argument("scenario", help="script under k6/, e.g. scenarios/smoke.ts")
     run_p.add_argument("--experiment", default=None, help="experiment name for the manifest")
     run_p.add_argument(
         "--skip-reset", action="store_true", help="don't reset (the run is marked invalid)"

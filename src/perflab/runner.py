@@ -7,6 +7,8 @@ Writes results/<run-id>/:
   k6-stdout.log      k6 console output
   k6-resources.csv   the k6 container's own CPU and memory, about once per second
   reset.json         the reset protocol report
+  scenario-plan.json the scenario's phases and start time (written by the k6 script)
+  report.json        per-endpoint/group/phase stats and computed pass criteria (analysis.report)
 """
 
 from __future__ import annotations
@@ -26,6 +28,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+from analysis import report
 from perflab import compose, conditions
 from perflab.dockerapi import Docker, Sample, cores_between
 from perflab.paths import K6_DIR, RESULTS_DIR, ROOT, load_pin
@@ -108,12 +111,19 @@ def _out(*cmd: str) -> str:
     return subprocess.run(cmd, capture_output=True, text=True, check=False).stdout.strip()
 
 
+def code_changes(porcelain: str) -> list[str]:
+    """Uncommitted changes that matter for reproducibility. Run outputs under results/ don't."""
+    return [
+        line
+        for line in porcelain.splitlines()
+        if line and not line[3:].strip('"').startswith("results/")
+    ]
+
+
 def git_state() -> tuple[str, list[str]]:
     commit = _out("git", "-C", str(ROOT), "rev-parse", "HEAD")
-    dirty = [
-        line for line in _out("git", "-C", str(ROOT), "status", "--porcelain").splitlines() if line
-    ]
-    return commit, dirty
+    porcelain = _out("git", "-C", str(ROOT), "status", "--porcelain", "--untracked-files=all")
+    return commit, code_changes(porcelain)
 
 
 def docker_facts() -> dict[str, Any]:
@@ -351,6 +361,12 @@ def run(opts: RunOptions) -> int:
     k6_finished = datetime.now(UTC)
     sampler.join(timeout=10)
     subprocess.run(["docker", "rm", container], check=False, capture_output=True)
+
+    if (out_dir / RAW_FILE).exists():
+        try:
+            sys.stdout.write(report.text(report.write(out_dir)))
+        except (OSError, ValueError, KeyError) as e:  # never lose a run to a report bug
+            say(f"report failed ({e}); rebuild it with: perflab report {out_dir}")
 
     say("capturing laptop conditions after the run")
     after = conditions.capture()

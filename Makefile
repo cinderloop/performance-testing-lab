@@ -1,5 +1,5 @@
 # Every common action. `make help` lists them.
-SCENARIO ?= scenarios/foundation-check.ts
+SCENARIO ?= scenarios/smoke.ts
 
 .PHONY: help setup fetch up down reset ports run lint typecheck inspect test check format
 

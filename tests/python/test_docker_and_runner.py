@@ -5,7 +5,7 @@ from pathlib import Path
 import pytest
 
 from perflab.dockerapi import cores_between, parse_sample, parse_time
-from perflab.runner import k6_command, make_run_id, script_env, service_settings
+from perflab.runner import code_changes, k6_command, make_run_id, script_env, service_settings
 
 
 def stats(read: str, cpu_ns: int, usage: int = 100, inactive: int = 30) -> dict[str, object]:
@@ -90,3 +90,14 @@ def test_service_settings_reads_limits_sampler_and_intervals() -> None:
     assert s["tracing"]["sampler"] == {"checkout": "parentbased_always_on (SDK default)"}
     assert s["tracing"]["jaeger_memory_max_traces"] == "25000"
     assert s["metric_intervals"]["sdk_export_interval_ms"] == {"checkout": "10000"}
+
+
+def test_results_dont_count_as_code_changes() -> None:
+    porcelain = (
+        "?? results/20261120T000000Z-smoke-abcd/manifest.json\n"
+        " M results/README.md\n"
+        " M k6/lib/http.ts\n"
+        "?? docs/new.md\n"
+        '?? "results/with space/x"\n'
+    )
+    assert code_changes(porcelain) == [" M k6/lib/http.ts", "?? docs/new.md"]
