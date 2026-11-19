@@ -6,7 +6,7 @@ A local, reproducible lab for load testing the [OpenTelemetry Demo](https://gith
 
 Load is only ever sent to the local demo. A guard in every k6 script refuses any other host, and every tool is bound to `127.0.0.1`.
 
-**Status:** Phase 1 (foundation) is done. Journeys, scenarios and experiments come in later phases.
+**Status:** Phase 2 (workload model and scenarios). Experiments come in later phases.
 
 ## Quick start
 
@@ -16,7 +16,8 @@ Needs: macOS on Apple Silicon, Docker Desktop with **≥ 12 GB** of memory, Node
 make setup      # pinned tooling + clone the pinned demo into demo/.upstream
 make up         # start the demo (about 30 s once the images are pulled; the first pull is about 11 GB)
 make reset      # reset protocol: fresh app state, verify it, health gate (about 1 min)
-make run        # reset, then run the foundation check in a k6 container
+make run        # reset, then run the smoke scenario in a k6 container
+make run SCENARIO=scenarios/load.ts   # any scenario: smoke, load, stress, spike, soak, breakpoint
 make down       # stop and delete volumes
 ```
 
@@ -32,11 +33,13 @@ UIs (loopback only): shop http://localhost:8080, Grafana http://localhost:8080/g
 |---|---|
 | `demo/` | demo-specific: pinned version, compose overrides, collector and SDK config ([demo/README.md](demo/README.md)) |
 | `k6/lib/` | generic: config, local-target guard, HTTP client with tags and timeouts, checks, options, summary |
-| `k6/scenarios/` | scenarios (Phase 1: `foundation-check.ts`, a pipeline check, not a workload) |
+| `k6/journeys/` | demo-specific: the shop's pages request for request, the three journeys and their mix |
+| `k6/scenarios/` | smoke, load, stress, spike, soak, breakpoint ([docs/scenarios.md](docs/scenarios.md)) |
+| `src/analysis/` | generic: raw-data loader, percentiles, windows, recovery/breakpoint/soak criteria, per-run report |
 | `src/perflab/` | generic lab tooling: reset protocol, laptop conditions, runner, manifest, validity rules |
 | `tests/` | unit tests: `tests/k6` (guard, config) and `tests/python` (reset checks, validity, parsers, runner) |
 | `results/` | one directory per run |
-| `docs/` | [spike findings](docs/spike-findings.md), [environment](docs/environment.md), [reset protocol](docs/reset-protocol.md), [decisions](docs/decisions/) |
+| `docs/` | [spike findings](docs/spike-findings.md), [environment](docs/environment.md), [reset protocol](docs/reset-protocol.md), [workload model](docs/workload-model.md), [thresholds](docs/thresholds.md), [scenarios](docs/scenarios.md), [decisions](docs/decisions/) |
 
 ## Decisions so far
 
@@ -51,6 +54,7 @@ UIs (loopback only): shop http://localhost:8080, Grafana http://localhost:8080/g
 | [0007](docs/decisions/0007-statistics-unit.md) | the run is the unit for comparing configurations |
 | [0008](docs/decisions/0008-request-timeouts.md) | explicit 10 s request timeout; timeouts are failures |
 | [0009](docs/decisions/0009-local-only-guard-and-ports.md) | local-target guard and loopback-only ports |
+| [0010](docs/decisions/0010-open-and-closed-models.md) | open workload model for load scenarios, closed only for smoke |
 
 ## Credit
 
