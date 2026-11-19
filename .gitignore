@@ -2,9 +2,16 @@
 /article/
 /build-prompt.md
 
+# Pinned upstream demo, fetched by `make fetch` (not copied into this repo)
+/demo/.upstream/
+
+# Tooling
+node_modules/
+.venv/
+__pycache__/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+
 # macOS
 .DS_Store
-
-# Run output and local env
-/results/
-.env.local

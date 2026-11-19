@@ -1,0 +1,7 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "types": ["node", "k6"]
+  },
+  "include": ["./**/*.ts", "../../k6/lib/guard.ts", "../../k6/lib/config.ts"]
+}

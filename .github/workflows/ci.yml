@@ -1,0 +1,56 @@
+# Pull-request CI: lint, type checks, k6 inspect, unit tests. No load is ever sent from CI
+# (the demo isn't started; k6 only runs `inspect`, with no network).
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  k6-scripts:
+    name: k6 scripts (lint, typecheck, unit tests)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+
+  python:
+    name: Python tooling (ruff, mypy, pytest)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          version: "0.13.4"
+      - run: uv sync --locked
+      - run: uv run ruff check .
+      - run: uv run ruff format --check .
+      - run: uv run mypy
+      - run: uv run pytest
+
+  demo-config:
+    name: k6 inspect, guard in k6, loopback-only ports
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          version: "0.13.4"
+      - run: uv sync --locked
+      - name: Fetch the pinned demo (config only; nothing is started)
+        run: uv run perflab fetch
+      - name: Every published port binds to 127.0.0.1, load generator excluded
+        run: uv run perflab ports
+      - name: k6 inspect every script, and the guard blocks a public BASE_URL
+        run: uv run perflab inspect

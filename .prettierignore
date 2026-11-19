@@ -1,0 +1,7 @@
+node_modules/
+demo/.upstream/
+results/
+.venv/
+uv.lock
+package-lock.json
+*.md
