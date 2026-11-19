@@ -372,7 +372,12 @@ def run(opts: RunOptions) -> int:
     after = conditions.capture()
     display_ok = caffeinate.poll() is None
     caffeinate.terminate()
-    facts = replace(facts_pre, conditions_after=after, display_sleep_prevented=display_ok)
+    facts = replace(
+        facts_pre,
+        conditions_after=after,
+        display_sleep_prevented=display_ok,
+        events_during_run=conditions.power_log_events(k6_started, datetime.now(UTC)),
+    )
     reasons = invalid_reasons(facts)
 
     manifest: dict[str, Any] = {
@@ -418,7 +423,11 @@ def run(opts: RunOptions) -> int:
         },
         "loadgen_confirmed_off": facts.loadgen_off,
         "host": {**conditions.host_details(), "docker": dfacts},
-        "conditions": {"before": before.to_json(), "after": after.to_json()},
+        "conditions": {
+            "before": before.to_json(),
+            "after": after.to_json(),
+            "power_log_during_run": facts.events_during_run,
+        },
         "other_containers": facts.other_containers,
         "files": [*sorted(p.name for p in out_dir.iterdir()), "manifest.json"],
     }

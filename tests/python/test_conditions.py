@@ -1,6 +1,9 @@
+from datetime import UTC, datetime
+
 from perflab.conditions import (
     Proc,
     busy_processes,
+    events_during,
     parse_loadavg,
     parse_power_source,
     parse_powermode,
@@ -66,3 +69,32 @@ def test_heavy_apps() -> None:
     )
     assert running_heavy_apps(ps) == ["Google Chrome", "Transmission"]
     assert running_heavy_apps("COMM\n/usr/libexec/trustd\n") == []
+
+
+PMSET_LOG = "\n".join(
+    [
+        "2026-11-20 01:50:00 +0530 Assertions   \tSummary- [System: PrevIdle] Using AC(Charge: 40)",
+        "2026-11-20 02:05:14 +0530 Assertions   \tSummary- [System: kCPU] Using Batt(Charge: 37)",
+        "2026-11-20 02:05:17 +0530 Sleep        \tEntering Sleep state due to 'Clamshell Sleep'",
+        "2026-11-20 02:05:18 +0530 Wake Requests\t[process=dasd request=SleepService]",
+        "2026-11-20 02:05:50 +0530 Wake         \tWake from Deep Idle [CDNVA] : due to lid",
+        "2026-11-20 03:00:00 +0530 Sleep        \tEntering Sleep state due to 'Idle Sleep'",
+    ]
+)
+
+
+def test_power_log_events_within_the_run_window() -> None:
+    # 01:55-02:30 +0530 = 20:25-21:00 UTC the day before
+    start = datetime(2026, 11, 19, 20, 25, tzinfo=UTC)
+    end = datetime(2026, 11, 19, 21, 0, tzinfo=UTC)
+    events = events_during(PMSET_LOG, start, end)
+    assert len(events) == 3
+    assert "Sleep: Entering Sleep state due to 'Clamshell Sleep'" in events[0]
+    assert events[1].split(" ", 1)[1].startswith("Wake: Wake from Deep Idle")
+    assert events[2] == "power log shows the Mac running on battery during the run"
+
+
+def test_power_log_quiet_run() -> None:
+    start = datetime(2026, 11, 19, 20, 10, tzinfo=UTC)
+    end = datetime(2026, 11, 19, 20, 30, tzinfo=UTC)  # 01:40-02:00 +0530: only AC lines
+    assert events_during(PMSET_LOG, start, end) == []

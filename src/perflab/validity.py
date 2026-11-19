@@ -3,7 +3,7 @@ but flagged `valid: false` with every reason, and must not be used for compariso
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any
 
 from perflab.conditions import Conditions, busy_processes
@@ -25,6 +25,7 @@ class RunFacts:
     docker_memory_bytes: int
     usage_report_disabled: bool
     display_sleep_prevented: bool
+    events_during_run: list[str] = field(default_factory=list)
 
 
 def condition_reasons(when: str, c: Conditions | None) -> list[str]:
@@ -66,6 +67,7 @@ def invalid_reasons(f: RunFacts) -> list[str]:
         reasons.append(f"Docker VM memory {gib:.1f} GiB is below the 12 GB minimum")
     if not f.usage_report_disabled:
         reasons.append("k6 usage reporting was not disabled")
+    reasons += [f"during the run: {e}" for e in f.events_during_run]
     if not f.display_sleep_prevented:
         reasons.append("display/system sleep was not prevented (caffeinate)")
     return reasons

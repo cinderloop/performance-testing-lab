@@ -7,6 +7,7 @@ import platform
 import re
 import subprocess
 from dataclasses import asdict, dataclass, field
+from datetime import datetime
 from typing import Any
 
 # Processes that are part of the lab itself or of macOS's normal background, never counted as
@@ -165,3 +166,38 @@ def host_details() -> dict[str, Any]:
         "macos": _sh("sw_vers", "-productVersion").strip(),
         "macos_build": _sh("sw_vers", "-buildVersion").strip(),
     }
+
+
+# "<timestamp> <category, may contain spaces, padded>\t<message>"
+_PMSET_LINE = re.compile(r"^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} [+-]\d{4}) (.+?)\s*\t(.*)$")
+SLEEP_CATEGORIES = ("Sleep", "Wake", "DarkWake")
+
+
+def events_during(pmset_log: str, start: datetime, end: datetime) -> list[str]:
+    """Sleep/wake events and battery use recorded by macOS between start and end.
+
+    `caffeinate` can't stop every sleep (closing the lid on battery forces "Clamshell Sleep"),
+    and checking conditions only before and after a run misses anything in between, so the
+    runner reads the power log for the run's time window.
+    """
+    events: list[str] = []
+    on_battery = False
+    for line in pmset_log.splitlines():
+        m = _PMSET_LINE.match(line)
+        if not m:
+            continue
+        when = datetime.strptime(m.group(1), "%Y-%m-%d %H:%M:%S %z")
+        if not start <= when <= end:
+            continue
+        category, message = m.group(2), " ".join(m.group(3).split())
+        if category in SLEEP_CATEGORIES:
+            events.append(f"{when.isoformat()} {category}: {message[:120]}")
+        if "Using Batt" in message:
+            on_battery = True
+    if on_battery:
+        events.append("power log shows the Mac running on battery during the run")
+    return events
+
+
+def power_log_events(start: datetime, end: datetime) -> list[str]:
+    return events_during(_sh("pmset", "-g", "log"), start, end)

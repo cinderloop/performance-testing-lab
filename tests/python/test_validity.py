@@ -67,6 +67,9 @@ def test_each_rule_makes_the_run_invalid() -> None:
         "below the 12 GB minimum": replace(GOOD, docker_memory_bytes=8_321_499_136),
         "usage reporting": replace(GOOD, usage_report_disabled=False),
         "caffeinate": replace(GOOD, display_sleep_prevented=False),
+        "during the run: 2026-11-20T02:05:17+05:30 Sleep": replace(
+            GOOD, events_during_run=["2026-11-20T02:05:17+05:30 Sleep: Entering Sleep state"]
+        ),
     }
     for expected, facts in cases.items():
         reasons = invalid_reasons(facts)
