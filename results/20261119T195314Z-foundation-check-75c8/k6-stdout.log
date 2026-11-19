@@ -1,0 +1,9 @@
+run 20261119T195314Z-foundation-check-75c8: 10.2 s
+  requests                   40 (3.9/s)
+  failed requests            0 (0.00%)
+  duration, successes        n=40  med=3.4  p95=10.9  p99=21.6  max=24.8 ms
+  duration, failures         n=0
+  checks passed              50/50
+  iterations                 10, dropped 0
+  thresholds passed
+  (raw per-request data: k6-raw.json.gz; use it, not these per-run percentiles)
